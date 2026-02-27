@@ -1,7 +1,7 @@
-### NAME:
-### ROLL NO :
-### DEPARTMENT 
-### DATE
+### NAME: ABISHEIK PRIYAN V
+### ROLL NO : 212224230005
+### DEPARTMENT : AI&DS
+### DATE : 27.2.2026
 
 
 
@@ -138,17 +138,67 @@ Run the Python script.
 
 Check if the message appears in the HiveMQ Web Client.
 ## PROGRAM
-[
-
-
-
-
-
-]
-
+```
+!pip install paho-mqtt
+import time
+import paho.mqtt.client as mqtt
+broker = "4c64564993cf4c17935a510839948e22.s1.eu.hivemq.cloud"
+port = 8883
+topic = "iot/demo/sensor"
+username = "hivemq.webclient.1762400995630"
+password = "1hr9eRWq!#6>FDPak8G?"
+client = mqtt.Client(client_id="python-publisher-001",
+callback_api_version=mqtt.CallbackAPIVersion.VERSION2)
+client.username_pw_set(username, password)
+client.tls_set()
+def on_connect(client, userdata, flags, reasonCode, properties):
+print("Connected to broker, reasonCode:", reasonCode)
+def on_publish(client, userdata, mid):
+print("on_publish called, mid:", mid)
+def on_disconnect(client, userdata, reasonCode, properties):
+print("Disconnected, reasonCode:", reasonCode)
+client.on_connect = on_connect
+client.on_publish = on_publish
+client.on_disconnect = on_disconnect
+client.connect(broker, port, keepalive=60)
+client.loop_start()
+message = "Abisheik priyan"
+info = client.publish(topic, payload=message, qos=1, retain=True)
+info.wait_for_publish()
+time.sleep(0.2)
+client.loop_stop()
+client.disconnect()
+print(f"Message '{message}' published to topic '{topic}' (qos=1 retain=True)")
+```
+```
+!pip install paho-mqtt
+import paho.mqtt.client as mqtt
+import time
+import random
+import ssl broker = "2db63400b0ff4bf0854f53f8bc629b93.s1.eu.hivemq.cloud"
+port = 8883
+topic = "iot/demo/sensor"
+username = "hivemq.webclient.1772169544954"
+password = "pwa0L7BXQNKk#l1<!6h?"
+client = mqtt.Client(client_id="publisher")
+client.username_pw_set(username, password) client.tls_set(tls_version=ssl.PROTOCOL_TLS)
+client.connect(broker, port)
+while True:
+temprature = round(random.uniform(20.0, 30.0), 2)
+humidity = round(random.uniform(30.0, 70.0), 2)
+payload = f"Temprature: {temprature:.2f} C, Humidity: {humidity:.2f}%"
+client.publish(topic, payload)
+print(f" Published: {payload} + {topic}")
+time.sleep(5)
 ### OUTPUT SCREENSHOTS
 
 
+
+```
+## Simulation Screenshots:
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/d81dbd91-978d-451e-825b-e75746c86373" />
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/ee571e74-0a05-41af-a715-6e3ed47ddcc4" />
 
 ## Results
 
